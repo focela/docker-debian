@@ -1,0 +1,14 @@
+#!/command/with-contenv bash
+#-----------------------------------------------------------------------------
+# Container Permissions Configuration
+#
+# Purpose: Define default environment variables for container permissions
+# Context: Loaded by with-contenv wrapper during container initialization
+# Note: These defaults control permission-related debugging and validation
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# DEBUGGING AND VALIDATION
+#-----------------------------------------------------------------------------
+# Enable debug mode for permission-related operations
+DEBUG_PERMISSIONS=${DEBUG_PERMISSIONS:-"FALSE"}
