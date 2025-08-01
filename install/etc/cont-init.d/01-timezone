@@ -1,0 +1,36 @@
+#!/command/with-contenv bash
+#-----------------------------------------------------------------------------
+# Container Timezone Configuration Script
+#
+# Purpose: Configure system timezone for container based on TIMEZONE environment
+#          variable and validate timezone settings
+# Context: Executed during container initialization phase after startup script
+#          Sets up timezone before other services start
+# Note: This script requires TIMEZONE environment variable to be set for
+#       timezone changes to take effect
+#-----------------------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------------------
+# ENVIRONMENT INITIALIZATION
+#-----------------------------------------------------------------------------
+# Load container functions library and initialize environment
+source /assets/functions/00-container
+output_off
+PROCESS_NAME="timezone"
+
+#-----------------------------------------------------------------------------
+# TIMEZONE CONFIGURATION
+#-----------------------------------------------------------------------------
+# Configure system timezone if TIMEZONE environment variable is provided
+if [ -n "${TIMEZONE}" ]; then
+  set_timezone "${TIMEZONE}"
+fi
+
+#-----------------------------------------------------------------------------
+# SCRIPT COMPLETION
+#-----------------------------------------------------------------------------
+# Mark timezone configuration as complete
+liftoff
+output_on
