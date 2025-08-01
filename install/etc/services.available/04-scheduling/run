@@ -53,23 +53,23 @@ case "${CONTAINER_SCHEDULING_BACKEND}" in
 
     # Parse and configure cron jobs from scheduling location
     print_debug "Parsing all files from ${CONTAINER_SCHEDULING_LOCATION}"
-    temp_crontab=$(date +%s)
-    echo 'MAILTO=""' > $temp_crontab
-    
+    cron_tab_file=$(date +%s)
+    echo 'MAILTO=""' > $cron_tab_file
+
     # Create empty file if scheduling directory is empty to prevent errors
-    if dir_empty "${CONTAINER_SCHEDULING_LOCATION}" ; then 
-      echo "# Intentionally empty" > "${CONTAINER_SCHEDULING_LOCATION}"/empty 
+    if dir_empty "${CONTAINER_SCHEDULING_LOCATION}" ; then
+      echo "# Intentionally empty" > "${CONTAINER_SCHEDULING_LOCATION}"/empty
     fi
-    
+
     # Parse all cron files, remove comments, and add to temporary crontab
-    sed "/#/d" "${CONTAINER_SCHEDULING_LOCATION}"/* | awk 'NF' >> /tmp/.container/cron/${temp_crontab}
+    sed "/#/d" "${CONTAINER_SCHEDULING_LOCATION}"/* | awk 'NF' >> /tmp/.container/cron/${cron_tab_file}
     silent crontab -r
-    crontab /tmp/.container/cron/${temp_crontab}
+    crontab /tmp/.container/cron/${cron_tab_file}
 
     # Start cron daemon based on operating system
     print_start "Starting cron"
-    os=$(cat /etc/os-release |grep ^ID= | cut -d = -f2)
-    case ${os} in
+    operating_system=$(cat /etc/os-release |grep ^ID= | cut -d = -f2)
+    case ${operating_system} in
       "alpine" )
         output_on
         exec /usr/sbin/crond -f -l ${SCHEDULING_LOG_LEVEL} ${cron_log_file}
